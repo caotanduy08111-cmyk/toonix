@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<script>(function(){try{document.documentElement.setAttribute("data-theme",localStorage.getItem("toonix_theme")||"light");}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Đăng Nhập / Đăng Ký — Toonix</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="auth">
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="logo">
+      <img src="assets/logo.png" alt="Toonix - Infinite Story Universe">
+    </a>
+    <nav class="main-nav">
+      <a href="index.html" data-nav="home">Trang Chủ</a>
+      <a href="list.html" data-nav="list">Danh Sách Truyện</a>
+      <a href="list.html?genre=Hành%20Động" data-nav="genre">Thể Loại</a>
+      <a href="favorites.html" data-nav="favorites">Yêu Thích</a>
+    </nav>
+    <form id="header-search" class="search-box">
+      <input type="text" placeholder="Tìm truyện...">
+      <button type="submit" aria-label="Tìm kiếm">🔍</button>
+    </form>
+    <div class="header-actions">
+      <button id="theme-toggle" class="icon-btn" type="button" title="Chuyển giao diện sáng/tối">🌙</button>
+      <div id="auth-area" class="auth-area"></div>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <div class="auth-wrap">
+    <h1>Chào Mừng Đến Toonix</h1>
+    <p class="sub">Đăng nhập để lưu truyện yêu thích của riêng bạn</p>
+
+    <div class="auth-tabs">
+      <button type="button" id="tab-login" class="active">Đăng Nhập</button>
+      <button type="button" id="tab-register">Đăng Ký</button>
+    </div>
+
+    <p class="auth-error" id="login-error"></p>
+    <form id="login-form" class="auth-form active">
+      <div>
+        <label for="login-email">Email</label>
+        <input type="email" id="login-email" placeholder="ban@email.com" required>
+      </div>
+      <div>
+        <label for="login-password">Mật khẩu</label>
+        <input type="password" id="login-password" placeholder="••••••••" required minlength="4">
+      </div>
+      <button type="submit" class="btn btn-primary">Đăng Nhập</button>
+      <p class="auth-switch">Chưa có tài khoản? <a href="#" id="go-register">Đăng ký ngay</a></p>
+    </form>
+
+    <p class="auth-error" id="register-error"></p>
+    <p class="auth-success" id="register-success"></p>
+    <form id="register-form" class="auth-form">
+      <div>
+        <label for="register-name">Tên hiển thị</label>
+        <input type="text" id="register-name" placeholder="Nguyễn Văn A" required>
+      </div>
+      <div>
+        <label for="register-email">Email</label>
+        <input type="email" id="register-email" placeholder="ban@email.com" required>
+      </div>
+      <div>
+        <label for="register-password">Mật khẩu</label>
+        <input type="password" id="register-password" placeholder="Tối thiểu 4 ký tự" required minlength="4">
+      </div>
+      <div>
+        <label for="register-password2">Nhập lại mật khẩu</label>
+        <input type="password" id="register-password2" placeholder="••••••••" required minlength="4">
+      </div>
+      <button type="submit" class="btn btn-primary">Tạo Tài Khoản</button>
+      <p class="auth-switch">Đã có tài khoản? <a href="#" id="go-login">Đăng nhập</a></p>
+    </form>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-top">
+    <div class="footer-about">
+      <a href="index.html" class="logo">
+        <img src="assets/logo.png" alt="Toonix - Infinite Story Universe">
+      </a>
+      <p>Toonix là nơi hội tụ hàng trăm bộ truyện tranh, manga, manhwa đủ thể loại — đọc miễn phí, cập nhật mỗi ngày.</p>
+      <div class="social-row">
+        <a href="#" aria-label="Facebook">f</a>
+        <a href="#" aria-label="Google">G</a>
+        <a href="#" aria-label="Instagram">◎</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Khám Phá</h4>
+      <ul>
+        <li><a href="index.html">Trang chủ</a></li>
+        <li><a href="list.html">Danh sách truyện</a></li>
+        <li><a href="favorites.html">Truyện yêu thích</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Thể Loại</h4>
+      <ul>
+        <li><a href="list.html?genre=Hành%20Động">Hành Động</a></li>
+        <li><a href="list.html?genre=Giả%20Tưởng">Giả Tưởng</a></li>
+        <li><a href="list.html?genre=Ngôn%20Tình">Ngôn Tình</a></li>
+        <li><a href="list.html?genre=Học%20Đường">Học Đường</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Về Chúng Tôi</h4>
+      <ul>
+        <li><a href="#">Giới thiệu</a></li>
+        <li><a href="#">Liên hệ</a></li>
+        <li><a href="#">Điều khoản sử dụng</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom container">© 2026 Toonix. All rights reserved.</div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/main.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const tabLogin = document.getElementById("tab-login");
+  const tabRegister = document.getElementById("tab-register");
+  const loginForm = document.getElementById("login-form");
+  const registerForm = document.getElementById("register-form");
+
+  function showLogin() {
+    tabLogin.classList.add("active"); tabRegister.classList.remove("active");
+    loginForm.classList.add("active"); registerForm.classList.remove("active");
+  }
+  function showRegister() {
+    tabRegister.classList.add("active"); tabLogin.classList.remove("active");
+    registerForm.classList.add("active"); loginForm.classList.remove("active");
+  }
+  tabLogin.addEventListener("click", showLogin);
+  tabRegister.addEventListener("click", showRegister);
+  document.getElementById("go-register").addEventListener("click", (e) => { e.preventDefault(); showRegister(); });
+  document.getElementById("go-login").addEventListener("click", (e) => { e.preventDefault(); showLogin(); });
+
+  const redirect = new URLSearchParams(location.search).get("redirect") || "index.html";
+
+  loginForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const email = document.getElementById("login-email").value.trim();
+    const password = document.getElementById("login-password").value;
+    const errorEl = document.getElementById("login-error");
+    const result = loginUser(email, password);
+    if (!result.ok) {
+      errorEl.textContent = result.error;
+      errorEl.classList.add("show");
+      return;
+    }
+    location.href = redirect;
+  });
+
+  registerForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const name = document.getElementById("register-name").value.trim();
+    const email = document.getElementById("register-email").value.trim();
+    const password = document.getElementById("register-password").value;
+    const password2 = document.getElementById("register-password2").value;
+    const errorEl = document.getElementById("register-error");
+    errorEl.classList.remove("show");
+
+    if (password !== password2) {
+      errorEl.textContent = "Mật khẩu nhập lại không khớp.";
+      errorEl.classList.add("show");
+      return;
+    }
+    const result = registerUser(name, email, password);
+    if (!result.ok) {
+      errorEl.textContent = result.error;
+      errorEl.classList.add("show");
+      return;
+    }
+    location.href = redirect;
+  });
+});
+</script>
+</body>
+</html>
