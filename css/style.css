@@ -24,14 +24,23 @@
 }
 
 html[data-theme="dark"] {
-  --bg: #17140F;
-  --surface: #221E17;
-  --ink: #F2EEE0;
-  --ink-soft: #B6AF9C;
-  --line: #3A3327;
-  --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-  --shadow-hover: 0 16px 34px rgba(201, 54, 56, 0.35);
-  --header-bg: rgba(23, 20, 15, .88);
+  --bg: #080B16;
+  --surface: #131A30;
+  --ink: #EAF0FF;
+  --ink-soft: #A6AFCC;
+  --line: #2A3358;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  --shadow-hover: 0 16px 34px rgba(98, 196, 218, 0.35);
+  --header-bg: rgba(8, 11, 22, .78);
+}
+html[data-theme="dark"] body {
+  background-image:
+    linear-gradient(rgba(8,11,22,.35), rgba(8,11,22,.55)),
+    url("../assets/bg/dark-bg.jpg");
+  background-size: cover;
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 * { box-sizing: border-box; }
