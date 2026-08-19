@@ -280,14 +280,7 @@ function initStoryPage() {
     favBtn.innerHTML = fav ? "♥ Đã Yêu Thích" : "♡ Yêu Thích";
   }
 
-  $("#chapter-list").innerHTML = story.chapters.map((c) => `
-    <a class="chapter-row" href="read.html?id=${story.id}&chap=${c.number}">
-      <span class="name">${c.title}</span>
-      <span class="date">${fmtDaysAgo(c.daysAgo)}</span>
-    </a>
-  `).join("");
-
-  $("#chapter-path").innerHTML = story.chapters.slice(0, 6).map((c, i) => `
+  $("#chapter-path").innerHTML = story.chapters.map((c, i) => `
     <a class="chapter-path-item ${i < 2 ? "is-new" : ""}" href="read.html?id=${story.id}&chap=${c.number}">
       <span class="name">${c.title}</span>
       <span class="date">${fmtDaysAgo(c.daysAgo)}</span>
@@ -295,10 +288,6 @@ function initStoryPage() {
   `).join("");
 
   initComments(story);
-
-  const related = STORIES.filter((s) => s.id !== story.id && s.genres.some((g) => story.genres.includes(g))).slice(0, 6);
-  const relatedFallback = related.length ? related : STORIES.filter((s) => s.id !== story.id).slice(0, 6);
-  renderGrid($("#grid-related"), relatedFallback);
 }
 
 /* ---------- Bình luận trên trang truyện ---------- */
