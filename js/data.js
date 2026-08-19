@@ -9,13 +9,13 @@ const STORIES = [
   { id: 2, title: "One Piece", cover: "assets/covers/h2.png",
     genres: ["Phiêu Lưu", "Hành Động", "Hài Hước"],
     description: "Hành trình của những hải tặc mũ rơm trên con đường trở thành Vua Hải Tặc, băng qua đại dương đầy bí ẩn." },
-  { id: 3, title: "Fairy Tail", cover: "assets/covers/h3.jpg",
+  { id: 3, title: "Fairy Tail", cover: "assets/covers/h3.jpg", banner: "assets/banners/banner-fairytail.jpg",
     genres: ["Giả Tưởng", "Phiêu Lưu", "Hành Động"],
     description: "Hội pháp sư náo nhiệt nhất vương quốc Fiore và những cuộc phiêu lưu đầy phép thuật, tình bạn." },
-  { id: 4, title: "Frieren", cover: "assets/covers/h4.jpg",
+  { id: 4, title: "Frieren", cover: "assets/covers/h4.jpg", banner: "assets/banners/banner-frieren.jpg",
     genres: ["Giả Tưởng", "Cảm Động", "Phiêu Lưu"],
     description: "Lời tiễn biệt của pháp sư bất tử — câu chuyện chậm rãi về những người ở lại sau chuyến phiêu lưu." },
-  { id: 5, title: "Hoá Thân Thành Mèo", cover: "assets/covers/h5.jpg",
+  { id: 5, title: "Hoá Thân Thành Mèo", cover: "assets/covers/h5.jpg", banner: "assets/banners/banner-hoathanmeo.jpg",
     genres: ["Siêu Nhiên", "Hài Hước", "Đời Thường"],
     description: "Một biến cố bất ngờ khiến chàng trai mang trong mình sức mạnh kỳ lạ liên quan đến loài mèo." },
   { id: 6, title: "Học Viện Anh Hùng", cover: "assets/covers/h6.png",
@@ -33,7 +33,7 @@ const STORIES = [
   { id: 10, title: "Cuộc Chiến Các Vị Thần", cover: "assets/covers/h10.png",
     genres: ["Hành Động", "Giả Tưởng", "Máu Chiến"],
     description: "Khi các vị thần đối đầu, cả thế giới trở thành chiến trường cho một cuộc chiến định đoạt vận mệnh." },
-  { id: 11, title: "Tiền Đạo Số 1", cover: "assets/covers/h11.png",
+  { id: 11, title: "Tiền Đạo Số 1", cover: "assets/covers/h11.png", banner: "assets/banners/banner-tiendaoso1.jpg",
     genres: ["Thể Thao", "Học Đường"],
     description: "Giấc mơ sân cỏ của một tiền đạo trẻ khát khao khẳng định vị trí số một trên hàng công." },
   { id: 12, title: "Naruto", cover: "assets/covers/h12.png",
@@ -45,7 +45,7 @@ const STORIES = [
   { id: 14, title: "Hiệp Sĩ Hoa Băng", cover: "assets/covers/h14.png",
     genres: ["Giả Tưởng", "Hành Động", "Ngôn Tình"],
     description: "Nữ hiệp sĩ mang thanh kiếm băng giá bước vào cuộc chiến bảo vệ vương quốc giữa mùa đông bất tận." },
-  { id: 15, title: "Bong Bóng Của Sóng Biển", cover: "assets/covers/h15.png",
+  { id: 15, title: "Bong Bóng Của Sóng Biển", cover: "assets/covers/h15.png", banner: "assets/banners/banner-bongbongsongbien.jpg",
     genres: ["Ngôn Tình", "Cổ Trang", "Cảm Động"],
     description: "Câu chuyện tình yêu mong manh như bọt sóng giữa bầu trời đêm và đại dương xa xăm." },
   { id: 16, title: "Công Chúa Bị Bỏ Rơi", cover: "assets/covers/h16.png",
@@ -90,6 +90,9 @@ STORIES.forEach((s) => {
 });
 
 const ALL_GENRES = [...new Set(STORIES.flatMap((s) => s.genres))].sort();
+
+/* Thứ tự banner lớn hiển thị ở hero trang chủ (theo bộ banner được cung cấp) */
+const BANNER_STORY_IDS = [4, 5, 3, 11, 15];
 
 function getStoryById(id) {
   return STORIES.find((s) => s.id === Number(id));

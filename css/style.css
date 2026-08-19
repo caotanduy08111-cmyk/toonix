@@ -254,59 +254,49 @@ ul { margin: 0; padding: 0; list-style: none; }
   background: #FDEDE7;
 }
 
-/* ===== Hero ===== */
+/* ===== Hero (banner lớn full-bleed, theo bố cục Figma) ===== */
 .hero {
   position: relative;
   margin: 24px 0 8px;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  background: linear-gradient(120deg, var(--sky), var(--soft-peach));
-  min-height: 420px;
-  display: flex;
-  align-items: stretch;
+  background: var(--surface);
+  aspect-ratio: 1440 / 620;
+  max-height: 620px;
 }
 .hero-slide {
   position: absolute;
   inset: 0;
-  display: grid;
-  grid-template-columns: 1.1fr .9fr;
-  align-items: center;
   opacity: 0;
   visibility: hidden;
-  transition: opacity .5s ease;
+  transition: opacity .6s ease;
 }
-.hero-slide.active { opacity: 1; visibility: visible; position: relative; }
-.hero-text {
-  padding: 48px 56px;
-  color: #1c2b2e;
-}
-.hero-text .chip { margin-bottom: 14px; }
-.hero-text h1 { font-size: 42px; line-height: 1.1; margin-bottom: 14px; }
-.hero-text p {
-  color: #294044;
-  max-width: 460px;
-  margin-bottom: 24px;
-  font-size: 15.5px;
-}
-.hero-actions { display: flex; gap: 14px; }
-.hero-cover {
+.hero-slide.active { opacity: 1; visibility: visible; }
+.hero-slide img {
+  width: 100%;
   height: 100%;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  overflow: hidden;
-}
-.hero-cover img {
-  height: 460px;
-  width: auto;
-  border-radius: 14px 14px 0 0;
-  box-shadow: -20px 20px 0 rgba(255,255,255,.35);
   object-fit: cover;
+  object-position: center;
+  display: block;
+}
+.hero-slide::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(20,16,10,.75) 0%, rgba(20,16,10,.15) 38%, transparent 60%);
+}
+.hero-slide .hero-actions {
+  position: absolute;
+  left: 40px;
+  bottom: 34px;
+  z-index: 2;
+  display: flex;
+  gap: 14px;
 }
 .hero-dots {
   position: absolute;
   bottom: 18px;
-  left: 56px;
+  right: 28px;
   display: flex;
   gap: 8px;
   z-index: 2;
@@ -315,9 +305,36 @@ ul { margin: 0; padding: 0; list-style: none; }
   width: 10px; height: 10px;
   border-radius: 50%;
   border: none;
-  background: rgba(44,38,32,.25);
+  background: rgba(255,255,255,.5);
 }
 .hero-dots button.active { background: var(--tomato); width: 26px; border-radius: 6px; }
+
+/* ===== Hai ô lớn: Thể Loại / Yêu Thích ===== */
+.tile-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin: 40px 0;
+}
+.big-tile {
+  position: relative;
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  overflow: hidden;
+  color: #fff;
+}
+.big-tile.tile-genre { background: linear-gradient(120deg, var(--sky), #3a97ad); }
+.big-tile.tile-fav { background: linear-gradient(120deg, var(--coral), var(--tomato)); }
+.big-tile .tile-icon { font-size: 30px; margin-bottom: 4px; }
+.big-tile h3 { color: #fff; font-size: 24px; margin-bottom: 4px; }
+.big-tile p { color: rgba(255,255,255,.85); font-size: 14px; margin: 0; }
+.big-tile:hover .tile-icon { transform: translateX(4px); }
+.big-tile .tile-icon { transition: transform .15s; }
 
 /* ===== Sections ===== */
 .section { padding: 52px 0; }
@@ -340,6 +357,51 @@ ul { margin: 0; padding: 0; list-style: none; }
 .section-head .see-all { font-weight: 700; color: var(--tomato); font-size: 14px; }
 
 .genre-strip { display: flex; flex-wrap: wrap; gap: 10px; }
+
+/* ===== Truyện Đề Cử: 1 thẻ lớn + lưới 2x2 ===== */
+.featured-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+}
+.featured-main { grid-column: 1 / 2; }
+.featured-grid {
+  grid-column: 2 / 4;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 20px;
+}
+.featured-main .story-card, .featured-grid .story-card { height: 100%; }
+.featured-main .cover-wrap { aspect-ratio: 3/4; }
+.featured-grid .cover-wrap { aspect-ratio: 4/3; }
+.featured-main h3 { font-size: 20px; }
+
+/* ===== Bảng Xếp Hạng: top 3 kiểu bục ===== */
+.ranking-podium {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr 1fr;
+  gap: 22px;
+  align-items: end;
+}
+.ranking-podium .story-card { position: relative; }
+.rank-badge {
+  position: absolute;
+  top: 8px; left: 8px;
+  z-index: 3;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: "Baloo 2";
+  font-weight: 800;
+  font-size: 15px;
+  color: #fff;
+  background: #8C8C8C;
+}
+.story-card.rank-2 .rank-badge { background: #C0761E; }
+.story-card.rank-1 .rank-badge { background: linear-gradient(135deg,#FFD65A,#C93638); width: 40px; height: 40px; font-size: 18px; }
+.story-card.rank-1 { transform: translateY(-18px); }
+.story-card.rank-1 .cover-wrap { aspect-ratio: 3/3.6; }
 
 /* ===== Story grid / card ===== */
 .story-grid {
@@ -694,13 +756,24 @@ ul { margin: 0; padding: 0; list-style: none; }
 /* ===== Responsive ===== */
 @media (max-width: 900px) {
   .main-nav { display: none; }
-  .hero-slide { grid-template-columns: 1fr; }
-  .hero-cover { display: none; }
   .story-hero { grid-template-columns: 1fr; }
   .story-hero .cover { max-width: 240px; }
   .footer-top { grid-template-columns: 1fr 1fr; }
+  .featured-layout { grid-template-columns: 1fr 1fr; }
+  .featured-main { grid-column: 1 / 3; }
+  .featured-grid { grid-column: 1 / 3; grid-template-columns: 1fr 1fr; }
+  .ranking-podium { grid-template-columns: 1fr 1fr 1fr; }
+  .rank-place-1, .story-card.rank-1 { transform: none; }
+}
+@media (max-width: 700px) {
+  .tile-row { grid-template-columns: 1fr; }
+  .ranking-podium { grid-template-columns: 1fr; }
 }
 @media (max-width: 560px) {
   .footer-top { grid-template-columns: 1fr; }
   .story-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 14px; }
+  .featured-grid { grid-template-columns: 1fr 1fr; }
+  .hero { aspect-ratio: 4/5; }
+  .hero-slide .hero-actions { left: 20px; bottom: 20px; }
+  .hero-slide .hero-actions .btn { padding: 9px 16px; font-size: 13px; }
 }

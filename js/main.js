@@ -73,22 +73,17 @@ function renderGrid(container, stories, emptyMsg = "Không tìm thấy truyện 
 function initHeroSlider() {
   const hero = $("#hero");
   if (!hero) return;
-  const featured = STORIES.slice(0, 5);
+  const featured = BANNER_STORY_IDS.map((id) => getStoryById(id)).filter(Boolean);
   const slidesWrap = $(".hero-slides", hero);
   const dotsWrap = $(".hero-dots", hero);
 
   slidesWrap.innerHTML = featured.map((s, i) => `
     <div class="hero-slide ${i === 0 ? "active" : ""}" data-i="${i}">
-      <div class="hero-text">
-        <span class="chip coral">${s.genres[0]}</span>
-        <h1>${s.title}</h1>
-        <p>${s.description}</p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="read.html?id=${s.id}&chap=1">▶ Đọc Ngay</a>
-          <a class="btn btn-ghost" href="story.html?id=${s.id}">Chi Tiết</a>
-        </div>
+      <img src="${s.banner}" alt="${s.title}">
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="read.html?id=${s.id}&chap=1">▶ Đọc Ngay</a>
+        <a class="btn btn-ghost" href="story.html?id=${s.id}">Chi Tiết</a>
       </div>
-      <div class="hero-cover"><img src="${s.cover}" alt="${s.title}"></div>
     </div>
   `).join("");
 
@@ -114,22 +109,52 @@ function initHeroSlider() {
   hero.addEventListener("mouseleave", () => { timer = setInterval(() => goTo(current + 1), 5000); });
 }
 
+/* ---------- Truyện đề cử: 1 thẻ lớn + lưới 2x2 ---------- */
+function renderFeatured() {
+  const mainEl = $("#featured-main");
+  const gridEl = $("#featured-grid");
+  if (!mainEl || !gridEl) return;
+
+  const picks = [...STORIES].sort((a, b) => b.rating - a.rating).slice(0, 5);
+  renderGrid(mainEl, picks.slice(0, 1));
+  renderGrid(gridEl, picks.slice(1, 5));
+}
+
+/* ---------- Bảng xếp hạng: top 3 theo lượt xem ---------- */
+function renderRankingPodium() {
+  const el = $("#ranking-podium");
+  if (!el) return;
+
+  const top3 = [...STORIES].sort((a, b) => b.views - a.views).slice(0, 3);
+  const visualOrder = [top3[1], top3[0], top3[2]].filter(Boolean);
+  const rankOf = (s) => top3.indexOf(s) + 1;
+
+  el.innerHTML = visualOrder.map((s) => {
+    const rank = rankOf(s);
+    const fav = typeof isFavorite === "function" && isFavorite(s.id);
+    return `
+    <div class="story-card rank-${rank}">
+      <span class="rank-badge">${rank}</span>
+      <a class="cover-wrap" href="story.html?id=${s.id}">
+        <img src="${s.cover}" alt="${s.title}" loading="lazy">
+      </a>
+      <button class="fav-btn ${fav ? "active" : ""}" data-id="${s.id}" aria-label="Yêu thích">${fav ? "♥" : "♡"}</button>
+      <a class="info" href="story.html?id=${s.id}">
+        <h3>${s.title}</h3>
+        <div class="meta">
+          <span>Ch. ${s.chapterCount} · ★ ${s.rating}</span>
+          <span class="rating">${fmtViews(s.views)} lượt xem</span>
+        </div>
+      </a>
+    </div>`;
+  }).join("");
+}
+
 /* ---------- Trang chủ ---------- */
 function initHomePage() {
   initHeroSlider();
-
-  const latest = [...STORIES].sort((a, b) => a.updatedDaysAgo - b.updatedDaysAgo).slice(0, 12);
-  renderGrid($("#grid-latest"), latest);
-
-  const hot = [...STORIES].sort((a, b) => b.views - a.views).slice(0, 12);
-  renderGrid($("#grid-hot"), hot);
-
-  const genreStrip = $("#genre-strip");
-  if (genreStrip) {
-    genreStrip.innerHTML = ALL_GENRES.map((g) =>
-      `<a class="chip-filter" href="list.html?genre=${encodeURIComponent(g)}">${g}</a>`
-    ).join("");
-  }
+  renderFeatured();
+  renderRankingPodium();
 }
 
 /* ---------- Trang danh sách ---------- */

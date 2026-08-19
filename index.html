@@ -22,7 +22,8 @@
       <a href="index.html" data-nav="home">Trang Chủ</a>
       <a href="list.html" data-nav="list">Danh Sách Truyện</a>
       <a href="list.html?genre=Hành%20Động" data-nav="genre">Thể Loại</a>
-      <a href="favorites.html" data-nav="favorites">Yêu Thích</a>
+      <a href="index.html#bxh" data-nav="bxh">BXH</a>
+      <a href="#" data-nav="community">Cộng Đồng</a>
     </nav>
     <form id="header-search" class="search-box">
       <input type="text" placeholder="Tìm truyện...">
@@ -42,46 +43,42 @@
     <div class="hero-dots"></div>
   </section>
 
-  <section class="section">
+  <div class="tile-row">
+    <a class="big-tile tile-genre" href="list.html">
+      <span class="tile-icon">🎭</span>
+      <h3>Thể Loại</h3>
+      <p>Duyệt truyện theo thể loại yêu thích của bạn →</p>
+    </a>
+    <a class="big-tile tile-fav" href="favorites.html">
+      <span class="tile-icon">❤</span>
+      <h3>Yêu Thích</h3>
+      <p>Xem lại danh sách truyện bạn đã lưu →</p>
+    </a>
+  </div>
+
+  <section class="section" id="de-cu">
     <div class="section-head">
       <div>
-        <span class="eyebrow">Vừa cập nhật</span>
-        <h2>Mới Cập Nhật</h2>
+        <span class="eyebrow">Không thể bỏ lỡ</span>
+        <h2>Truyện Đề Cử</h2>
       </div>
       <a class="see-all" href="list.html">Xem tất cả →</a>
     </div>
-    <div class="story-grid" id="grid-latest"></div>
-  </section>
-
-  <section class="section" style="padding-top:0">
-    <div class="cta-banner">
-      <div>
-        <h2>Khám phá 21+ bộ truyện đang chờ bạn</h2>
-        <p>Từ hành động, giả tưởng đến ngôn tình, học đường — thể loại nào cũng có.</p>
-      </div>
-      <a class="btn btn-ghost" href="list.html">Khám Phá Ngay</a>
+    <div class="featured-layout">
+      <div class="featured-main" id="featured-main"></div>
+      <div class="featured-grid" id="featured-grid"></div>
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" id="bxh">
     <div class="section-head">
       <div>
-        <span class="eyebrow">Được yêu thích</span>
-        <h2>Truyện Nổi Bật</h2>
+        <span class="eyebrow">Top lượt xem</span>
+        <h2>Bảng Xếp Hạng</h2>
       </div>
       <a class="see-all" href="list.html">Xem tất cả →</a>
     </div>
-    <div class="story-grid" id="grid-hot"></div>
-  </section>
-
-  <section class="section">
-    <div class="section-head">
-      <div>
-        <span class="eyebrow">Chọn gu của bạn</span>
-        <h2>Thể Loại</h2>
-      </div>
-    </div>
-    <div class="genre-strip" id="genre-strip"></div>
+    <div class="ranking-podium" id="ranking-podium"></div>
   </section>
 
 </main>
@@ -93,37 +90,32 @@
         <img src="assets/logo.png" alt="Toonix - Infinite Story Universe">
       </a>
       <p>Toonix là nơi hội tụ hàng trăm bộ truyện tranh, manga, manhwa đủ thể loại — đọc miễn phí, cập nhật mỗi ngày.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Xem Thêm</h4>
+      <ul>
+        <li><a href="index.html">Trang chủ</a></li>
+        <li><a href="list.html">Danh sách truyện</a></li>
+        <li><a href="index.html#bxh">Xếp hạng</a></li>
+        <li><a href="favorites.html">Truyện yêu thích</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Xem Thêm</h4>
+      <ul>
+        <li><a href="list.html?genre=Hành%20Động">Thể loại</a></li>
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">Hướng dẫn</a></li>
+        <li><a href="#">Liên hệ</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Theo Dõi Chúng Tôi</h4>
       <div class="social-row">
         <a href="#" aria-label="Facebook">f</a>
         <a href="#" aria-label="Google">G</a>
         <a href="#" aria-label="Instagram">◎</a>
       </div>
-    </div>
-    <div class="footer-col">
-      <h4>Khám Phá</h4>
-      <ul>
-        <li><a href="index.html">Trang chủ</a></li>
-        <li><a href="list.html">Danh sách truyện</a></li>
-        <li><a href="list.html">Truyện hot</a></li>
-        <li><a href="favorites.html">Truyện yêu thích</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Thể Loại</h4>
-      <ul>
-        <li><a href="list.html?genre=Hành%20Động">Hành Động</a></li>
-        <li><a href="list.html?genre=Giả%20Tưởng">Giả Tưởng</a></li>
-        <li><a href="list.html?genre=Ngôn%20Tình">Ngôn Tình</a></li>
-        <li><a href="list.html?genre=Học%20Đường">Học Đường</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Về Chúng Tôi</h4>
-      <ul>
-        <li><a href="#">Giới thiệu</a></li>
-        <li><a href="#">Liên hệ</a></li>
-        <li><a href="#">Điều khoản sử dụng</a></li>
-      </ul>
     </div>
   </div>
   <div class="footer-bottom container">© 2026 Toonix. All rights reserved.</div>
