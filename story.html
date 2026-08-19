@@ -20,8 +20,8 @@
     <nav class="main-nav">
       <a href="index.html" data-nav="home">Trang Chủ</a>
       <a href="list.html" data-nav="list">Danh Sách Truyện</a>
-      <a href="list.html?genre=Hành%20Động" data-nav="genre">Thể Loại</a>
-      <a href="index.html#bxh" data-nav="bxh">BXH</a>
+      <a href="the-loai.html" data-nav="genre">Thể Loại</a>
+      <a href="top.html" data-nav="top">BXH</a>
       <a href="#" data-nav="community">Cộng Đồng</a>
     </nav>
     <form id="header-search" class="search-box">
@@ -37,36 +37,86 @@
 
 <main class="container" id="story-root">
 
-  <div class="story-hero">
-    <div class="cover"><img id="s-cover" src="" alt=""></div>
-    <div class="details">
-      <h1 id="s-title"></h1>
-      <div class="genres" id="s-genres"></div>
-      <p class="description" id="s-description"></p>
+  <div class="story-top">
+    <div class="breadcrumb"><a href="index.html">Trang chủ</a> / <a href="list.html">Danh sách truyện</a> / <span id="s-title-crumb"></span></div>
+    <h1 id="s-title"></h1>
+    <p style="color:var(--ink-soft); font-size:14px; margin:0;">
+      <span id="s-status"></span> · <span id="s-chapcount"></span> chương · ★ <span id="s-rating"></span> · Cập nhật <span id="s-updated"></span>
+    </p>
+  </div>
 
-      <div class="stat-row">
-        <div><b id="s-status"></b>Trạng thái</div>
-        <div><b id="s-chapcount"></b>Số chương</div>
-        <div><b id="s-views"></b>Lượt xem</div>
-        <div><b id="s-rating"></b>Đánh giá</div>
-        <div><b id="s-author"></b>Tác giả</div>
-        <div><b id="s-updated"></b>Cập nhật</div>
+  <div class="story-info-grid">
+    <div class="info-stack">
+      <div class="info-card">
+        <span class="label">Tác Giả</span>
+        <div class="value" id="s-author"></div>
       </div>
+      <div class="info-card">
+        <span class="label">Thể Loại</span>
+        <div class="genre-chips" id="s-genres"></div>
+      </div>
+    </div>
 
-      <div class="actions">
-        <a id="btn-read-first" class="btn btn-primary" href="#">▶ Đọc Từ Đầu</a>
-        <a id="btn-read-latest" class="btn btn-outline" href="#">Đọc Mới Nhất</a>
-        <button id="btn-fav-story" class="btn btn-fav" type="button">♡ Yêu Thích</button>
+    <div class="story-cover-col">
+      <div class="cover"><img id="s-cover" src="" alt=""></div>
+      <a id="btn-read-first" class="btn btn-primary" href="#">▶ Đọc Từ Đầu</a>
+    </div>
+
+    <div class="info-stack">
+      <div class="stat-pair">
+        <div class="info-card">
+          <span class="label">Xếp Hạng</span>
+          <div class="value big" id="s-rank">#—</div>
+        </div>
+        <div class="info-card">
+          <span class="label">Lượt Xem</span>
+          <div class="value big" id="s-views">—</div>
+        </div>
+      </div>
+      <div class="info-card description-card">
+        <span class="label">Nội Dung</span>
+        <p id="s-description"></p>
+        <div class="mini-actions">
+          <a id="btn-read-latest" class="btn btn-outline" href="#">Đọc Mới Nhất</a>
+          <button id="btn-fav-story" class="btn btn-fav" type="button">♡ Yêu Thích</button>
+        </div>
       </div>
     </div>
   </div>
+
+  <section class="chapter-path-section">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Vừa lên sóng</span>
+        <h2>Chương Mới Cập Nhật</h2>
+      </div>
+    </div>
+    <div class="chapter-path" id="chapter-path"></div>
+  </section>
 
   <div class="chapters-panel">
     <div class="head">
-      <h2>Danh Sách Chương</h2>
+      <h2>Toàn Bộ Danh Sách Chương</h2>
     </div>
     <div class="chapter-list" id="chapter-list"></div>
   </div>
+
+  <section class="comments-section">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Cộng đồng</span>
+        <h2>Thảo Luận Mới</h2>
+      </div>
+    </div>
+    <div id="comment-login-hint" class="comment-login-hint" style="display:none">
+      <a href="auth.html">Đăng nhập</a> để tham gia thảo luận về truyện này.
+    </div>
+    <form id="comment-form" class="comment-form" style="display:none">
+      <textarea id="comment-text" placeholder="Viết bình luận của bạn..." maxlength="500" required></textarea>
+      <button type="submit" class="btn btn-primary">Gửi</button>
+    </form>
+    <div id="comment-list"></div>
+  </section>
 
   <section class="section" style="padding-top:0">
     <div class="section-head">
@@ -93,16 +143,16 @@
       <ul>
         <li><a href="index.html">Trang chủ</a></li>
         <li><a href="list.html">Danh sách truyện</a></li>
-        <li><a href="index.html#bxh">Xếp hạng</a></li>
-        <li><a href="favorites.html">Truyện yêu thích</a></li>
+        <li><a href="truyen-cap-nhat.html">Truyện cập nhật</a></li>
+        <li><a href="truyen-full.html">Truyện full</a></li>
       </ul>
     </div>
     <div class="footer-col">
       <h4>Xem Thêm</h4>
       <ul>
-        <li><a href="list.html?genre=Hành%20Động">Thể loại</a></li>
+        <li><a href="the-loai.html">Thể loại</a></li>
         <li><a href="#">FAQ</a></li>
-        <li><a href="#">Hướng dẫn</a></li>
+        <li><a href="top.html">Xếp hạng</a></li>
         <li><a href="#">Liên hệ</a></li>
       </ul>
     </div>

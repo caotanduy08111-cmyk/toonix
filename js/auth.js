@@ -23,10 +23,21 @@ function registerUser(name, email, password) {
   if (users.some((u) => u.email.toLowerCase() === email.toLowerCase())) {
     return { ok: false, error: "Email này đã được đăng ký." };
   }
-  users.push({ name, email, password });
+  users.push({ name, email, password, gender: null, birthday: "", favoriteGenres: [] });
   saveUsers(users);
   localStorage.setItem(SESSION_KEY, email);
   return { ok: true };
+}
+
+function updateCurrentUser(patch) {
+  const user = getCurrentUser();
+  if (!user) return false;
+  const users = getUsers();
+  const idx = users.findIndex((u) => u.email.toLowerCase() === user.email.toLowerCase());
+  if (idx < 0) return false;
+  users[idx] = { ...users[idx], ...patch };
+  saveUsers(users);
+  return true;
 }
 
 function loginUser(email, password) {
@@ -62,6 +73,49 @@ function toggleFavorite(id) {
   return favs.includes(id);
 }
 
+/* ---------- Lịch sử đọc (riêng theo từng tài khoản) ---------- */
+function historyKey() {
+  const user = getCurrentUser();
+  return `toonix_history_${user ? user.email.toLowerCase() : "guest"}`;
+}
+function getHistory() {
+  try { return JSON.parse(localStorage.getItem(historyKey())) || []; }
+  catch { return []; }
+}
+function recordHistory(storyId, chapterNumber) {
+  storyId = Number(storyId);
+  chapterNumber = Number(chapterNumber);
+  let hist = getHistory().filter((h) => h.storyId !== storyId);
+  hist.unshift({ storyId, chapterNumber, time: Date.now() });
+  hist = hist.slice(0, 40);
+  localStorage.setItem(historyKey(), JSON.stringify(hist));
+}
+function clearHistory() {
+  localStorage.removeItem(historyKey());
+}
+
+/* ---------- Bình luận (demo, lưu theo từng truyện) ---------- */
+function commentsKey(storyId) { return `toonix_comments_${storyId}`; }
+function getComments(storyId) {
+  try { return JSON.parse(localStorage.getItem(commentsKey(storyId))) || []; }
+  catch { return []; }
+}
+function addComment(storyId, text, chapterLabel) {
+  const user = getCurrentUser();
+  if (!user) return null;
+  const list = getComments(storyId);
+  const entry = {
+    id: Date.now(),
+    name: user.name || user.email,
+    text: text.trim(),
+    chapter: chapterLabel || "Toàn truyện",
+    time: Date.now(),
+  };
+  list.unshift(entry);
+  localStorage.setItem(commentsKey(storyId), JSON.stringify(list));
+  return entry;
+}
+
 /* ---------- Chế độ sáng / tối ---------- */
 function applyStoredTheme() {
   const theme = localStorage.getItem(THEME_KEY) || "light";
@@ -95,6 +149,8 @@ function renderAuthArea() {
         ${user.name}
       </button>
       <div class="user-dropdown">
+        <a href="ho-so.html">👤 Hồ Sơ</a>
+        <a href="lich-su-doc.html">🕘 Lịch Sử Đọc</a>
         <a href="favorites.html">❤ Truyện Yêu Thích</a>
         <hr>
         <button type="button" id="logout-btn">↩ Đăng Xuất</button>
@@ -134,6 +190,21 @@ function initFavoriteButtons() {
       initFavoritesPage();
     }
   });
+}
+
+/* ---------- Toast thông báo nhỏ ---------- */
+function showToast(message) {
+  let el = document.getElementById("toonix-toast");
+  if (!el) {
+    el = document.createElement("div");
+    el.id = "toonix-toast";
+    el.className = "toast";
+    document.body.appendChild(el);
+  }
+  el.textContent = message;
+  el.classList.add("show");
+  clearTimeout(el._hideTimer);
+  el._hideTimer = setTimeout(() => el.classList.remove("show"), 2200);
 }
 
 document.addEventListener("DOMContentLoaded", () => {

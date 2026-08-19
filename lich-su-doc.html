@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <script>(function(){try{document.documentElement.setAttribute("data-theme",localStorage.getItem("toonix_theme")||"light");}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Danh Sách Truyện — Toonix</title>
+<title>Lịch Sử Đọc — Toonix</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
-<body data-page="list">
+<body data-page="history">
 
 <header class="site-header">
   <div class="container">
@@ -36,25 +36,24 @@
 </header>
 
 <main class="container">
-  <div class="page-head">
-    <div class="breadcrumb"><a href="index.html">Trang chủ</a> / Danh sách truyện</div>
-    <h1>Danh Sách Truyện</h1>
+  <div class="page-head" style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:10px;">
+    <div>
+      <div class="breadcrumb"><a href="index.html">Trang chủ</a> / Lịch sử đọc</div>
+      <h1>Lịch Sử Đọc</h1>
+    </div>
+    <button id="history-clear-btn" class="btn btn-outline" type="button" style="display:none;">Xoá Lịch Sử</button>
   </div>
 
-  <div class="toolbar">
-    <div class="filters" id="genre-filters"></div>
-    <select id="sort-select">
-      <option value="latest">Mới cập nhật</option>
-      <option value="views">Nhiều lượt xem</option>
-      <option value="rating">Đánh giá cao</option>
-      <option value="az">Tên A → Z</option>
-    </select>
+  <div class="empty-state" id="history-guest-notice" style="display:none; margin-top:20px;">
+    <div class="icon">🔒</div>
+    <p>Đăng nhập để xem lịch sử đọc truyện của bạn.</p>
+    <a class="btn btn-primary" href="auth.html?redirect=lich-su-doc.html">Đăng Nhập / Đăng Ký</a>
   </div>
 
-  <p id="search-info" style="color:var(--ink-soft);font-weight:600;margin-bottom:18px;"></p>
-
-  <div class="story-grid" id="grid-list"></div>
-  <div class="pagination" id="pagination"></div>
+  <div id="history-root" style="display:none; margin-top:24px; max-width:760px;">
+    <p class="empty-state" id="history-empty" style="display:none;">Bạn chưa đọc truyện nào. <a href="list.html">Khám phá truyện ngay</a></p>
+    <div id="history-list"></div>
+  </div>
 </main>
 
 <footer class="site-footer">
@@ -78,8 +77,8 @@
       <h4>Xem Thêm</h4>
       <ul>
         <li><a href="the-loai.html">Thể loại</a></li>
-        <li><a href="#">FAQ</a></li>
         <li><a href="top.html">Xếp hạng</a></li>
+        <li><a href="#">FAQ</a></li>
         <li><a href="#">Liên hệ</a></li>
       </ul>
     </div>

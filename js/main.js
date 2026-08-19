@@ -254,6 +254,7 @@ function initStoryPage() {
   $("#s-cover").src = story.cover;
   $("#s-cover").alt = story.title;
   $("#s-title").textContent = story.title;
+  $("#s-title-crumb").textContent = story.title;
   $("#s-genres").innerHTML = story.genres.map((g) => `<a class="chip" href="list.html?genre=${encodeURIComponent(g)}">${g}</a>`).join("");
   $("#s-description").textContent = story.description;
   $("#s-status").textContent = story.status;
@@ -262,6 +263,9 @@ function initStoryPage() {
   $("#s-rating").textContent = story.rating;
   $("#s-author").textContent = story.author;
   $("#s-updated").textContent = fmtDaysAgo(story.updatedDaysAgo);
+
+  const byViews = [...STORIES].sort((a, b) => b.views - a.views);
+  $("#s-rank").textContent = `#${byViews.indexOf(story) + 1}`;
 
   const firstChap = story.chapters[story.chapters.length - 1].number;
   const lastChap = story.chapters[0].number;
@@ -283,9 +287,67 @@ function initStoryPage() {
     </a>
   `).join("");
 
+  $("#chapter-path").innerHTML = story.chapters.slice(0, 6).map((c, i) => `
+    <a class="chapter-path-item ${i < 2 ? "is-new" : ""}" href="read.html?id=${story.id}&chap=${c.number}">
+      <span class="name">${c.title}</span>
+      <span class="date">${fmtDaysAgo(c.daysAgo)}</span>
+    </a>
+  `).join("");
+
+  initComments(story);
+
   const related = STORIES.filter((s) => s.id !== story.id && s.genres.some((g) => story.genres.includes(g))).slice(0, 6);
   const relatedFallback = related.length ? related : STORIES.filter((s) => s.id !== story.id).slice(0, 6);
   renderGrid($("#grid-related"), relatedFallback);
+}
+
+/* ---------- Bình luận trên trang truyện ---------- */
+function initComments(story) {
+  const hint = $("#comment-login-hint");
+  const form = $("#comment-form");
+  const listEl = $("#comment-list");
+  if (!listEl) return;
+
+  const user = typeof getCurrentUser === "function" ? getCurrentUser() : null;
+  hint.style.display = user ? "none" : "block";
+  form.style.display = user ? "flex" : "none";
+
+  function renderList() {
+    const comments = getComments(story.id);
+    if (!comments.length) {
+      listEl.innerHTML = `<p class="comment-empty">Chưa có bình luận nào. Hãy là người đầu tiên chia sẻ cảm nhận!</p>`;
+      return;
+    }
+    listEl.innerHTML = comments.map((c) => `
+      <div class="comment-item">
+        <div class="comment-avatar">${c.name.trim().charAt(0).toUpperCase()}</div>
+        <div class="comment-body">
+          <div class="top-row">
+            <span class="author">${c.name}</span>
+            <span class="chapter-tag">${c.chapter}</span>
+            <span class="time">${fmtDaysAgo(Math.floor((Date.now() - c.time) / 86400000))}</span>
+          </div>
+          <div class="text"></div>
+        </div>
+      </div>
+    `).join("");
+    $$(".comment-body .text", listEl).forEach((el, i) => { el.textContent = comments[i].text; });
+  }
+
+  if (form && !form.dataset.bound) {
+    form.dataset.bound = "1";
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const textarea = $("#comment-text");
+      const text = textarea.value.trim();
+      if (!text) return;
+      addComment(story.id, text);
+      textarea.value = "";
+      renderList();
+    });
+  }
+
+  renderList();
 }
 
 /* ---------- Trang đọc chương ---------- */
@@ -310,6 +372,8 @@ function initReaderPage() {
   const currentChap = chapterExists ? chap : story.chapters[story.chapters.length - 1].number;
 
   document.title = `${story.title} — Chương ${currentChap} — Toonix`;
+
+  if (typeof recordHistory === "function") recordHistory(story.id, currentChap);
 
   $("#r-story-name").textContent = story.title;
   $("#r-story-name").href = `story.html?id=${story.id}`;
@@ -371,6 +435,158 @@ function initFavoritesPage() {
   renderGrid(grid, favStories, "Bạn chưa yêu thích truyện nào. Bấm biểu tượng ♡ trên bất kỳ truyện nào để lưu vào đây.");
 }
 
+/* ---------- Trang Thể Loại (gallery) ---------- */
+function buildGenreStats() {
+  return ALL_GENRES.map((name) => {
+    const stories = STORIES.filter((s) => s.genres.includes(name));
+    const totalViews = stories.reduce((sum, s) => sum + s.views, 0);
+    const cover = [...stories].sort((a, b) => b.views - a.views)[0];
+    return { name, count: stories.length, totalViews, cover: cover ? cover.cover : "" };
+  });
+}
+
+function initGenrePage() {
+  const stats = buildGenreStats().sort((a, b) => b.totalViews - a.totalViews);
+  const featured = stats[0];
+  const rest = stats.slice(1);
+
+  const featuredLink = $("#genre-featured");
+  featuredLink.href = `list.html?genre=${encodeURIComponent(featured.name)}`;
+  $("#genre-featured-img").src = featured.cover;
+  $("#genre-featured-img").alt = featured.name;
+  $("#genre-featured-name").textContent = featured.name;
+  $("#genre-featured-count").textContent = `${featured.count} truyện · ${fmtViews(featured.totalViews)} lượt xem`;
+
+  $("#genre-tile-grid").innerHTML = rest.map((g) => `
+    <a class="genre-tile" href="list.html?genre=${encodeURIComponent(g.name)}">
+      <img src="${g.cover}" alt="${g.name}" loading="lazy">
+      <div class="info">
+        <div class="name">${g.name}</div>
+        <div class="count">${g.count} truyện</div>
+      </div>
+    </a>
+  `).join("");
+}
+
+/* ---------- Trang Bảng Xếp Hạng đầy đủ (top.html) ---------- */
+function initTopPage() {
+  renderRankingPodium();
+
+  const genreSelect = $("#top-genre");
+  const statusSelect = $("#top-status");
+  const sortSelect = $("#top-sort");
+  const grid = $("#top-grid");
+  if (!grid) return;
+
+  genreSelect.innerHTML = `<option value="Tất Cả">Tất cả thể loại</option>` +
+    ALL_GENRES.map((g) => `<option value="${g}">${g}</option>`).join("");
+
+  function apply() {
+    let list = STORIES.filter((s) => {
+      const genreOk = genreSelect.value === "Tất Cả" || s.genres.includes(genreSelect.value);
+      const statusOk = statusSelect.value === "Tất Cả" || s.status === statusSelect.value;
+      return genreOk && statusOk;
+    });
+    if (sortSelect.value === "views") list.sort((a, b) => b.views - a.views);
+    if (sortSelect.value === "rating") list.sort((a, b) => b.rating - a.rating);
+    if (sortSelect.value === "chapters") list.sort((a, b) => b.chapterCount - a.chapterCount);
+    renderGrid(grid, list.slice(0, 12));
+  }
+  [genreSelect, statusSelect, sortSelect].forEach((el) => el.addEventListener("change", apply));
+  apply();
+
+  const tabDay = $("#tab-week");
+  const tabMonth = $("#tab-month");
+  const miniList = $("#mini-rank-list");
+  function renderMini(list) {
+    miniList.innerHTML = list.slice(0, 6).map((s, i) => `
+      <a class="mini-rank-row" href="story.html?id=${s.id}">
+        <span class="num">${i + 1}</span>
+        <img class="thumb" src="${s.cover}" alt="${s.title}">
+        <span class="info">
+          <span class="name">${s.title}</span>
+          <span class="stat">${fmtViews(s.views)} lượt xem</span>
+        </span>
+      </a>
+    `).join("");
+  }
+  const weekOrder = [...STORIES].sort((a, b) => b.rating - a.rating || b.views - a.views);
+  const monthOrder = [...STORIES].sort((a, b) => b.chapterCount - a.chapterCount || b.views - a.views);
+  renderMini(weekOrder);
+  tabDay.addEventListener("click", () => {
+    tabDay.classList.add("active"); tabMonth.classList.remove("active");
+    renderMini(weekOrder);
+  });
+  tabMonth.addEventListener("click", () => {
+    tabMonth.classList.add("active"); tabDay.classList.remove("active");
+    renderMini(monthOrder);
+  });
+}
+
+/* ---------- Trang Lịch Sử Đọc ---------- */
+function initHistoryPage() {
+  const user = getCurrentUser();
+  const guestNotice = $("#history-guest-notice");
+  const list = $("#history-list");
+  const empty = $("#history-empty");
+  const clearBtn = $("#history-clear-btn");
+
+  if (!user) {
+    guestNotice.style.display = "block";
+    return;
+  }
+  $("#history-root").style.display = "block";
+
+  function render() {
+    const hist = getHistory();
+    if (!hist.length) {
+      list.innerHTML = "";
+      empty.style.display = "block";
+      clearBtn.style.display = "none";
+      return;
+    }
+    empty.style.display = "none";
+    clearBtn.style.display = "inline-flex";
+    list.innerHTML = hist.map((h) => {
+      const s = getStoryById(h.storyId);
+      if (!s) return "";
+      const date = new Date(h.time);
+      const daysAgo = Math.floor((Date.now() - h.time) / 86400000);
+      return `
+      <div class="history-card">
+        <img src="${s.cover}" alt="${s.title}">
+        <div class="info">
+          <div class="title">${s.title}</div>
+          <div class="chap">Đã đọc: Chương ${h.chapterNumber}</div>
+          <div class="time">${fmtDaysAgo(daysAgo)}</div>
+        </div>
+        <a class="btn btn-outline" href="read.html?id=${s.id}&chap=${h.chapterNumber}">Đọc Tiếp</a>
+      </div>`;
+    }).join("");
+  }
+
+  clearBtn.addEventListener("click", () => {
+    clearHistory();
+    render();
+  });
+
+  render();
+}
+
+/* ---------- Truyện cập nhật / Truyện full ---------- */
+function initUpdatedPage() {
+  const list = [...STORIES].sort((a, b) => a.updatedDaysAgo - b.updatedDaysAgo);
+  renderGrid($("#grid-updated"), list);
+  const ctaBtn = $("#cta-read-now");
+  if (ctaBtn && list[0]) ctaBtn.href = `read.html?id=${list[0].id}&chap=${list[0].chapters[0].number}`;
+}
+function initCompletedPage() {
+  const list = STORIES.filter((s) => s.status === "Hoàn Thành");
+  renderGrid($("#grid-completed"), list, "Chưa có truyện nào hoàn thành.");
+  const ctaBtn = $("#cta-read-now");
+  if (ctaBtn && list[0]) ctaBtn.href = `read.html?id=${list[0].id}&chap=${list[0].chapters[0].number}`;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   markActiveNav();
   initHeaderSearch();
@@ -380,4 +596,9 @@ document.addEventListener("DOMContentLoaded", () => {
   if (page === "story") initStoryPage();
   if (page === "read") initReaderPage();
   if (page === "favorites") initFavoritesPage();
+  if (page === "genre") initGenrePage();
+  if (page === "top") initTopPage();
+  if (page === "history") initHistoryPage();
+  if (page === "updated") initUpdatedPage();
+  if (page === "completed") initCompletedPage();
 });

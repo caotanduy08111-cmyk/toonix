@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <script>(function(){try{document.documentElement.setAttribute("data-theme",localStorage.getItem("toonix_theme")||"light");}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Danh Sách Truyện — Toonix</title>
+<title>Truyện Full — Toonix</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
-<body data-page="list">
+<body data-page="completed">
 
 <header class="site-header">
   <div class="container">
@@ -36,25 +36,18 @@
 </header>
 
 <main class="container">
-  <div class="page-head">
-    <div class="breadcrumb"><a href="index.html">Trang chủ</a> / Danh sách truyện</div>
-    <h1>Danh Sách Truyện</h1>
+  <div class="cta-banner" style="margin-top:24px; background:linear-gradient(120deg, var(--sky), #3a97ad);">
+    <div>
+      <h2>Truyện Đã Hoàn Thành</h2>
+      <p>Đọc trọn bộ không cần chờ chương mới — tuyển tập truyện full hay nhất.</p>
+    </div>
+    <a class="btn btn-ghost" id="cta-read-now" href="list.html">Đọc Ngay →</a>
   </div>
 
-  <div class="toolbar">
-    <div class="filters" id="genre-filters"></div>
-    <select id="sort-select">
-      <option value="latest">Mới cập nhật</option>
-      <option value="views">Nhiều lượt xem</option>
-      <option value="rating">Đánh giá cao</option>
-      <option value="az">Tên A → Z</option>
-    </select>
+  <div class="section-head" style="margin-top:36px;">
+    <div><h2>Truyện Đã Hoàn Thành</h2></div>
   </div>
-
-  <p id="search-info" style="color:var(--ink-soft);font-weight:600;margin-bottom:18px;"></p>
-
-  <div class="story-grid" id="grid-list"></div>
-  <div class="pagination" id="pagination"></div>
+  <div class="story-grid" id="grid-completed"></div>
 </main>
 
 <footer class="site-footer">
@@ -78,8 +71,8 @@
       <h4>Xem Thêm</h4>
       <ul>
         <li><a href="the-loai.html">Thể loại</a></li>
-        <li><a href="#">FAQ</a></li>
         <li><a href="top.html">Xếp hạng</a></li>
+        <li><a href="#">FAQ</a></li>
         <li><a href="#">Liên hệ</a></li>
       </ul>
     </div>

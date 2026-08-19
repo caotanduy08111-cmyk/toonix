@@ -20,8 +20,8 @@
     <nav class="main-nav">
       <a href="index.html" data-nav="home">Trang Chủ</a>
       <a href="list.html" data-nav="list">Danh Sách Truyện</a>
-      <a href="list.html?genre=Hành%20Động" data-nav="genre">Thể Loại</a>
-      <a href="index.html#bxh" data-nav="bxh">BXH</a>
+      <a href="the-loai.html" data-nav="genre">Thể Loại</a>
+      <a href="top.html" data-nav="top">BXH</a>
       <a href="#" data-nav="community">Cộng Đồng</a>
     </nav>
     <form id="header-search" class="search-box">
@@ -43,6 +43,15 @@
     <div class="auth-tabs">
       <button type="button" id="tab-login" class="active">Đăng Nhập</button>
       <button type="button" id="tab-register">Đăng Ký</button>
+    </div>
+
+    <div id="social-login-block">
+      <div class="social-login-row">
+        <button type="button" class="social-btn" data-social="Facebook" title="Đăng nhập bằng Facebook">f</button>
+        <button type="button" class="social-btn" data-social="Google" title="Đăng nhập bằng Google">G</button>
+        <button type="button" class="social-btn" data-social="Toonix ID" title="Đăng nhập bằng Toonix ID">◎</button>
+      </div>
+      <div class="or-divider">hoặc đăng nhập bằng email</div>
     </div>
 
     <p class="auth-error" id="login-error"></p>
@@ -97,16 +106,16 @@
       <ul>
         <li><a href="index.html">Trang chủ</a></li>
         <li><a href="list.html">Danh sách truyện</a></li>
-        <li><a href="index.html#bxh">Xếp hạng</a></li>
-        <li><a href="favorites.html">Truyện yêu thích</a></li>
+        <li><a href="truyen-cap-nhat.html">Truyện cập nhật</a></li>
+        <li><a href="truyen-full.html">Truyện full</a></li>
       </ul>
     </div>
     <div class="footer-col">
       <h4>Xem Thêm</h4>
       <ul>
-        <li><a href="list.html?genre=Hành%20Động">Thể loại</a></li>
+        <li><a href="the-loai.html">Thể loại</a></li>
         <li><a href="#">FAQ</a></li>
-        <li><a href="#">Hướng dẫn</a></li>
+        <li><a href="top.html">Xếp hạng</a></li>
         <li><a href="#">Liên hệ</a></li>
       </ul>
     </div>
@@ -131,15 +140,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const tabRegister = document.getElementById("tab-register");
   const loginForm = document.getElementById("login-form");
   const registerForm = document.getElementById("register-form");
+  const socialBlock = document.getElementById("social-login-block");
 
   function showLogin() {
     tabLogin.classList.add("active"); tabRegister.classList.remove("active");
     loginForm.classList.add("active"); registerForm.classList.remove("active");
+    socialBlock.style.display = "block";
   }
   function showRegister() {
     tabRegister.classList.add("active"); tabLogin.classList.remove("active");
     registerForm.classList.add("active"); loginForm.classList.remove("active");
+    socialBlock.style.display = "none";
   }
+
+  document.querySelectorAll(".social-btn").forEach((btn) => {
+    btn.addEventListener("click", () => showToast(`Đăng nhập bằng ${btn.dataset.social} đang được phát triển`));
+  });
   tabLogin.addEventListener("click", showLogin);
   tabRegister.addEventListener("click", showRegister);
   document.getElementById("go-register").addEventListener("click", (e) => { e.preventDefault(); showRegister(); });
@@ -181,7 +197,7 @@ document.addEventListener("DOMContentLoaded", () => {
       errorEl.classList.add("show");
       return;
     }
-    location.href = redirect;
+    location.href = `onboarding-gioitinh.html?redirect=${encodeURIComponent(redirect)}`;
   });
 });
 </script>

@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <script>(function(){try{document.documentElement.setAttribute("data-theme",localStorage.getItem("toonix_theme")||"light");}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Danh Sách Truyện — Toonix</title>
+<title>Bảng Xếp Hạng — Toonix</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
-<body data-page="list">
+<body data-page="top">
 
 <header class="site-header">
   <div class="container">
@@ -37,24 +37,50 @@
 
 <main class="container">
   <div class="page-head">
-    <div class="breadcrumb"><a href="index.html">Trang chủ</a> / Danh sách truyện</div>
-    <h1>Danh Sách Truyện</h1>
+    <div class="breadcrumb"><a href="index.html">Trang chủ</a> / Bảng xếp hạng</div>
+    <h1>Bảng Xếp Hạng</h1>
   </div>
 
-  <div class="toolbar">
-    <div class="filters" id="genre-filters"></div>
-    <select id="sort-select">
-      <option value="latest">Mới cập nhật</option>
-      <option value="views">Nhiều lượt xem</option>
-      <option value="rating">Đánh giá cao</option>
-      <option value="az">Tên A → Z</option>
-    </select>
+  <div class="ranking-podium" id="ranking-podium" style="margin:30px 0 50px;"></div>
+
+  <div class="top-layout">
+    <div>
+      <div class="section-head">
+        <div><span class="eyebrow">Cập nhật liên tục</span><h2>Top Ngày</h2></div>
+      </div>
+      <div class="filter-box">
+        <div class="field">
+          <label>Thể loại</label>
+          <select id="top-genre"></select>
+        </div>
+        <div class="field">
+          <label>Trạng thái</label>
+          <select id="top-status">
+            <option value="Tất Cả">Tất cả</option>
+            <option value="Đang Tiến Hành">Đang tiến hành</option>
+            <option value="Hoàn Thành">Hoàn thành</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Sắp xếp theo</label>
+          <select id="top-sort">
+            <option value="views">Lượt xem</option>
+            <option value="rating">Đánh giá</option>
+            <option value="chapters">Số chương</option>
+          </select>
+        </div>
+      </div>
+      <div class="story-grid" id="top-grid"></div>
+    </div>
+
+    <div class="mini-rank-panel">
+      <div class="mini-rank-tabs">
+        <button id="tab-week" class="active" type="button">Top Tuần</button>
+        <button id="tab-month" type="button">Top Tháng</button>
+      </div>
+      <div class="mini-rank-list" id="mini-rank-list"></div>
+    </div>
   </div>
-
-  <p id="search-info" style="color:var(--ink-soft);font-weight:600;margin-bottom:18px;"></p>
-
-  <div class="story-grid" id="grid-list"></div>
-  <div class="pagination" id="pagination"></div>
 </main>
 
 <footer class="site-footer">
@@ -78,8 +104,8 @@
       <h4>Xem Thêm</h4>
       <ul>
         <li><a href="the-loai.html">Thể loại</a></li>
-        <li><a href="#">FAQ</a></li>
         <li><a href="top.html">Xếp hạng</a></li>
+        <li><a href="#">FAQ</a></li>
         <li><a href="#">Liên hệ</a></li>
       </ul>
     </div>

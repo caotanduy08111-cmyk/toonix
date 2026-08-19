@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <script>(function(){try{document.documentElement.setAttribute("data-theme",localStorage.getItem("toonix_theme")||"light");}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Danh Sách Truyện — Toonix</title>
+<title>Thể Loại — Toonix</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
-<body data-page="list">
+<body data-page="genre">
 
 <header class="site-header">
   <div class="container">
@@ -37,24 +37,20 @@
 
 <main class="container">
   <div class="page-head">
-    <div class="breadcrumb"><a href="index.html">Trang chủ</a> / Danh sách truyện</div>
-    <h1>Danh Sách Truyện</h1>
+    <div class="breadcrumb"><a href="index.html">Trang chủ</a> / Thể loại</div>
+    <h1>Khám Phá Thể Loại</h1>
   </div>
 
-  <div class="toolbar">
-    <div class="filters" id="genre-filters"></div>
-    <select id="sort-select">
-      <option value="latest">Mới cập nhật</option>
-      <option value="views">Nhiều lượt xem</option>
-      <option value="rating">Đánh giá cao</option>
-      <option value="az">Tên A → Z</option>
-    </select>
-  </div>
+  <a class="genre-featured" id="genre-featured" href="#">
+    <img id="genre-featured-img" src="" alt="">
+    <div class="info">
+      <span class="eyebrow">Thể loại được yêu thích</span>
+      <h2 id="genre-featured-name"></h2>
+      <p id="genre-featured-count"></p>
+    </div>
+  </a>
 
-  <p id="search-info" style="color:var(--ink-soft);font-weight:600;margin-bottom:18px;"></p>
-
-  <div class="story-grid" id="grid-list"></div>
-  <div class="pagination" id="pagination"></div>
+  <div class="genre-tile-grid" id="genre-tile-grid"></div>
 </main>
 
 <footer class="site-footer">
@@ -78,8 +74,8 @@
       <h4>Xem Thêm</h4>
       <ul>
         <li><a href="the-loai.html">Thể loại</a></li>
-        <li><a href="#">FAQ</a></li>
         <li><a href="top.html">Xếp hạng</a></li>
+        <li><a href="#">FAQ</a></li>
         <li><a href="#">Liên hệ</a></li>
       </ul>
     </div>

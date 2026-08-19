@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<script>(function(){try{document.documentElement.setAttribute("data-theme",localStorage.getItem("toonix_theme")||"light");}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hồ Sơ Của Bạn — Toonix</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="profile">
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="logo">
+      <img src="assets/logo.png" alt="Toonix - Infinite Story Universe">
+    </a>
+    <nav class="main-nav">
+      <a href="index.html" data-nav="home">Trang Chủ</a>
+      <a href="list.html" data-nav="list">Danh Sách Truyện</a>
+      <a href="the-loai.html" data-nav="genre">Thể Loại</a>
+      <a href="top.html" data-nav="top">BXH</a>
+      <a href="#" data-nav="community">Cộng Đồng</a>
+    </nav>
+    <form id="header-search" class="search-box">
+      <input type="text" placeholder="Tìm truyện...">
+      <button type="submit" aria-label="Tìm kiếm">🔍</button>
+    </form>
+    <div class="header-actions">
+      <button id="theme-toggle" class="icon-btn" type="button" title="Chuyển giao diện sáng/tối">🌙</button>
+      <div id="auth-area" class="auth-area"></div>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <div class="empty-state" id="profile-guest-notice" style="display:none; margin-top:40px;">
+    <div class="icon">🔒</div>
+    <p>Đăng nhập để xem hồ sơ của bạn.</p>
+    <a class="btn btn-primary" href="auth.html?redirect=ho-so.html">Đăng Nhập / Đăng Ký</a>
+  </div>
+
+  <div class="profile-wrap" id="profile-root" style="display:none;">
+    <h1>Hồ Sơ Của Bạn</h1>
+    <div class="profile-avatar" id="profile-avatar"></div>
+    <h2 id="profile-name" style="margin-bottom:0;"></h2>
+
+    <div class="tile-row" style="margin-top:30px;">
+      <a class="big-tile tile-genre" href="lich-su-doc.html">
+        <span class="tile-icon">🕘</span>
+        <h3>Lịch Sử Đọc</h3>
+        <p>Xem lại các chương bạn vừa đọc →</p>
+      </a>
+      <a class="big-tile tile-fav" href="favorites.html">
+        <span class="tile-icon">❤</span>
+        <h3>Truyện Yêu Thích</h3>
+        <p>Xem danh sách truyện đã lưu →</p>
+      </a>
+    </div>
+
+    <form class="profile-form-card" id="profile-form">
+      <h2>Thông Tin Của Bạn</h2>
+      <p class="profile-save-msg" id="profile-save-msg">Đã lưu thông tin!</p>
+      <div class="field">
+        <label for="p-name">Họ tên</label>
+        <input type="text" id="p-name" placeholder="Nguyễn Văn A">
+      </div>
+      <div class="field">
+        <label for="p-birthday">Sinh nhật</label>
+        <input type="date" id="p-birthday">
+      </div>
+      <div class="field">
+        <label for="p-email">Email</label>
+        <input type="email" id="p-email" disabled>
+      </div>
+      <button type="submit" class="btn btn-primary">Lưu Thay Đổi</button>
+    </form>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-top">
+    <div class="footer-about">
+      <a href="index.html" class="logo">
+        <img src="assets/logo.png" alt="Toonix - Infinite Story Universe">
+      </a>
+      <p>Toonix là nơi hội tụ hàng trăm bộ truyện tranh, manga, manhwa đủ thể loại — đọc miễn phí, cập nhật mỗi ngày.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Xem Thêm</h4>
+      <ul>
+        <li><a href="index.html">Trang chủ</a></li>
+        <li><a href="list.html">Danh sách truyện</a></li>
+        <li><a href="truyen-cap-nhat.html">Truyện cập nhật</a></li>
+        <li><a href="truyen-full.html">Truyện full</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Xem Thêm</h4>
+      <ul>
+        <li><a href="the-loai.html">Thể loại</a></li>
+        <li><a href="top.html">Xếp hạng</a></li>
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">Liên hệ</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Theo Dõi Chúng Tôi</h4>
+      <div class="social-row">
+        <a href="#" aria-label="Facebook">f</a>
+        <a href="#" aria-label="Google">G</a>
+        <a href="#" aria-label="Instagram">◎</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom container">© 2026 Toonix. All rights reserved.</div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/main.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const user = getCurrentUser();
+  const guestNotice = document.getElementById("profile-guest-notice");
+  const root = document.getElementById("profile-root");
+
+  if (!user) {
+    guestNotice.style.display = "block";
+    return;
+  }
+  root.style.display = "block";
+
+  const avatar = document.getElementById("profile-avatar");
+  avatar.textContent = (user.name || user.email).trim().charAt(0).toUpperCase();
+  document.getElementById("profile-name").textContent = user.name;
+  document.getElementById("p-name").value = user.name || "";
+  document.getElementById("p-birthday").value = user.birthday || "";
+  document.getElementById("p-email").value = user.email || "";
+
+  document.getElementById("profile-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    updateCurrentUser({
+      name: document.getElementById("p-name").value.trim() || user.name,
+      birthday: document.getElementById("p-birthday").value,
+    });
+    document.getElementById("profile-name").textContent = document.getElementById("p-name").value.trim();
+    avatar.textContent = document.getElementById("p-name").value.trim().charAt(0).toUpperCase();
+    const msg = document.getElementById("profile-save-msg");
+    msg.classList.add("show");
+    renderAuthArea();
+    setTimeout(() => msg.classList.remove("show"), 2500);
+  });
+});
+</script>
+</body>
+</html>
