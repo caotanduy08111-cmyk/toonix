@@ -364,11 +364,13 @@ ul { margin: 0; padding: 0; list-style: none; }
    bên cạnh, tránh ảnh bị phóng to quá khổ. */
 .featured-layout {
   display: grid;
-  grid-template-columns: 1.3fr 1fr;
+  grid-template-columns: 1.5fr 1fr;
   gap: 20px;
   align-items: start;
 }
-.featured-main .story-card { max-width: 360px; margin: 0 auto; }
+.featured-main .story-card { max-width: 480px; margin: 0 auto; }
+.featured-main h3 { font-size: 26px; }
+.featured-main .meta { font-size: 14px; }
 .featured-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
