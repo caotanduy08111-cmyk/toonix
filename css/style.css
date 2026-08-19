@@ -358,25 +358,23 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 .genre-strip { display: flex; flex-wrap: wrap; gap: 10px; }
 
-/* ===== Truyện Đề Cử: 1 thẻ lớn + lưới 2x2 ===== */
+/* ===== Truyện Đề Cử: 1 thẻ lớn + lưới 2x2 =====
+   Thẻ lớn dùng đúng khung ảnh chuẩn (tỉ lệ 3:4 như mọi thẻ khác), chỉ
+   khác ở bề rộng cột (1.3fr) — không kéo giãn ảnh theo chiều cao lưới
+   bên cạnh, tránh ảnh bị phóng to quá khổ. */
 .featured-layout {
   display: grid;
   grid-template-columns: 1.3fr 1fr;
   gap: 20px;
+  align-items: start;
 }
+.featured-main .story-card { max-width: 360px; margin: 0 auto; }
 .featured-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
   gap: 20px;
 }
-.featured-main .story-card, .featured-grid .story-card { height: 100%; }
-/* Ảnh thẻ lớn giãn lấp đầy chiều cao còn lại, không để trống khoảng trắng
-   (selector cụ thể hơn .story-card .cover-wrap để thắng thứ tự cascade) */
-.featured-layout .featured-main .story-card { display: flex; flex-direction: column; }
-.featured-layout .featured-main .story-card .cover-wrap { flex: 1 1 auto; min-height: 0; aspect-ratio: auto; }
-.featured-main .info { flex-shrink: 0; }
-.featured-main h3 { font-size: 22px; -webkit-line-clamp: 2; }
+.featured-main h3 { font-size: 20px; }
 .featured-grid .cover-wrap { aspect-ratio: 4/3; }
 
 /* ===== Bảng Xếp Hạng: top 3 kiểu bục ===== */
@@ -1102,8 +1100,7 @@ ul { margin: 0; padding: 0; list-style: none; }
   .chapter-path::before { display: none; }
   .footer-top { grid-template-columns: 1fr 1fr; }
   .featured-layout { grid-template-columns: 1fr; }
-  .featured-layout .featured-main .story-card { display: block; }
-  .featured-layout .featured-main .story-card .cover-wrap { aspect-ratio: 16/9; flex: none; }
+  .featured-main .story-card { max-width: 280px; }
   .ranking-podium { grid-template-columns: 1fr 1fr 1fr; }
   .rank-place-1, .story-card.rank-1 { transform: none; }
   .top-layout { grid-template-columns: 1fr; }
