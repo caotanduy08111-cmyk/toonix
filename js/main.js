@@ -151,10 +151,29 @@ function renderRankingPodium() {
 }
 
 /* ---------- Trang chủ ---------- */
+function initMarquee(elId, items) {
+  const track = $(elId);
+  if (!track) return;
+  const html = items.map((t) => `<span class="marquee-item">${t}<span class="dot">✦</span></span>`).join("");
+  track.innerHTML = html + html; // lặp lại 2 lần để cuộn liền mạch
+}
+
 function initHomePage() {
   initHeroSlider();
   renderFeatured();
   renderRankingPodium();
+
+  initMarquee("#marquee-genres", ALL_GENRES.map((g) =>
+    `<a href="list.html?genre=${encodeURIComponent(g)}">${g}</a>`
+  ));
+  initMarquee("#marquee-features", [
+    `${STORIES.length}+ Đầu Truyện`,
+    "Cập Nhật Mỗi Ngày",
+    "Đọc Hoàn Toàn Miễn Phí",
+    "Lưu Truyện Yêu Thích",
+    "Trải Nghiệm Lật Trang 3D",
+    "Bảng Xếp Hạng Theo Thời Gian Thực",
+  ]);
 }
 
 /* ---------- Trang danh sách ---------- */
@@ -398,9 +417,94 @@ function initReaderPage() {
     </div>
   `).join("");
 
+  initFlipbookMode(story, currentChap, pageCount);
+
   const related = STORIES.filter((s) => s.id !== story.id).slice(0, 6);
   const relatedGrid = $("#grid-reader-related");
   if (relatedGrid) renderGrid(relatedGrid, related);
+}
+
+/* ---------- Chế độ lật trang sách 3D (thư viện page-flip) ---------- */
+function buildFlipbook(story, currentChap, pageCount) {
+  const container = $("#flipbook");
+  if (!container || typeof St === "undefined") return null;
+  container.innerHTML = "";
+
+  const cover = document.createElement("div");
+  cover.className = "page page-cover";
+  cover.innerHTML = `
+    <img src="${story.cover}" alt="${story.title}">
+    <div style="font-size:18px;font-weight:800;">${story.title}</div>
+    <div style="font-size:13px;opacity:.85">Chương ${currentChap}</div>`;
+  container.appendChild(cover);
+
+  for (let i = 0; i < pageCount; i++) {
+    const p = document.createElement("div");
+    p.className = `page page-g${i % 4}`;
+    p.innerHTML = `<span class="num">Trang ${i + 1}/${pageCount}</span><span class="hint">Ảnh minh hoạ demo</span>`;
+    container.appendChild(p);
+  }
+
+  const backCover = document.createElement("div");
+  backCover.className = "page page-cover";
+  backCover.innerHTML = `<div style="font-size:18px;font-weight:800;">Hết Chương ${currentChap}</div>`;
+  container.appendChild(backCover);
+
+  const pageFlip = new St.PageFlip(container, {
+    width: 300,
+    height: 440,
+    size: "stretch",
+    minWidth: 180,
+    maxWidth: 500,
+    minHeight: 280,
+    maxHeight: 700,
+    showCover: true,
+    usePortrait: true,
+    maxShadowOpacity: 0.5,
+    mobileScrollSupport: true,
+  });
+  pageFlip.loadFromHTML(container.querySelectorAll(".page"));
+  return pageFlip;
+}
+
+function initFlipbookMode(story, currentChap, pageCount) {
+  const modeScrollBtn = $("#mode-scroll");
+  const modeFlipBtn = $("#mode-flip");
+  const flipWrap = $("#flipbook-wrap");
+  const strip = $("#reader-strip");
+  if (!modeScrollBtn || !modeFlipBtn) return;
+
+  let pageFlipInstance = null;
+
+  modeFlipBtn.addEventListener("click", () => {
+    if (typeof St === "undefined") {
+      if (typeof showToast === "function") showToast("Không tải được chế độ lật trang, kiểm tra kết nối mạng.");
+      return;
+    }
+    modeFlipBtn.classList.add("active");
+    modeScrollBtn.classList.remove("active");
+    strip.style.display = "none";
+    flipWrap.classList.add("active");
+
+    if (!pageFlipInstance) {
+      pageFlipInstance = buildFlipbook(story, currentChap, pageCount);
+      if (!pageFlipInstance) return;
+      const countEl = $("#flip-page-count");
+      countEl.textContent = `1 / ${pageFlipInstance.getPageCount()}`;
+      pageFlipInstance.on("flip", (e) => {
+        countEl.textContent = `${e.data + 1} / ${pageFlipInstance.getPageCount()}`;
+      });
+      $("#flip-prev").addEventListener("click", () => pageFlipInstance.flipPrev());
+      $("#flip-next").addEventListener("click", () => pageFlipInstance.flipNext());
+    }
+  });
+
+  modeScrollBtn.addEventListener("click", () => {
+    modeScrollBtn.classList.add("active");
+    modeFlipBtn.classList.remove("active");
+    strip.style.display = "";
+    flipWrap.classList.remove("active");
+  });
 }
 
 /* ---------- Trang truyện yêu thích ---------- */

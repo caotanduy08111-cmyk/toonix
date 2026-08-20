@@ -638,6 +638,7 @@ ul { margin: 0; padding: 0; list-style: none; }
   background: var(--tomato); color: #fff;
   font-size: 10px; font-weight: 800; letter-spacing: .5px;
   padding: 2px 9px; border-radius: 999px;
+  animation: pulse-glow 2.4s ease-in-out infinite;
 }
 
 /* ===== Bình luận (demo, lưu trong trình duyệt) ===== */
@@ -1078,6 +1079,119 @@ ul { margin: 0; padding: 0; list-style: none; }
   transition: opacity .25s, transform .25s;
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ===== Thanh cuộn theo màu thương hiệu ===== */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--line); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--tomato); }
+
+/* ===== Dải chữ chạy (marquee) ===== */
+.marquee-band {
+  padding: 18px 0;
+  border-top: 2px solid var(--line);
+  border-bottom: 2px solid var(--line);
+  background: var(--surface);
+  margin: 40px 0;
+}
+.marquee-wrap {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  gap: 40px;
+  animation: marquee 28s linear infinite;
+}
+.marquee-wrap:hover .marquee-track { animation-play-state: paused; }
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: "Baloo 2", sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+.marquee-item a { color: inherit; }
+.marquee-item a:hover { color: var(--tomato); }
+.marquee-item .dot { color: var(--tomato); font-size: 12px; }
+
+/* ===== Hiệu ứng bồng bềnh / phát sáng nhấp nháy ===== */
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.anim-floaty { display: inline-block; animation: floaty 5s ease-in-out infinite; }
+@keyframes pulse-glow {
+  0%, 100% { opacity: .55; filter: drop-shadow(0 0 0 transparent); }
+  50% { opacity: 1; filter: drop-shadow(0 0 8px currentColor); }
+}
+.anim-pulse { animation: pulse-glow 2.4s ease-in-out infinite; }
+
+/* ===== Trang đọc: chế độ lật trang sách 3D ===== */
+.reader-mode-toggle {
+  display: flex;
+  border: 2px solid var(--line);
+  border-radius: 999px;
+  padding: 3px;
+  gap: 2px;
+}
+.reader-mode-toggle button {
+  border: none;
+  background: none;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+.reader-mode-toggle button.active { background: var(--tomato); color: #fff; }
+
+.flipbook-wrap {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  margin: 26px auto 50px;
+  width: 100%;
+  max-width: 720px;
+  perspective: 2200px;
+}
+.flipbook-wrap.active { display: flex; }
+#flipbook { margin: 0 auto; touch-action: pan-y; max-width: 100%; overflow: hidden; }
+#flipbook .page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 8px;
+  color: #fff;
+  font-family: "Baloo 2";
+  box-shadow: inset 0 0 40px rgba(0,0,0,.25);
+}
+#flipbook .page.page-cover {
+  background: linear-gradient(160deg, var(--tomato), #7a1f21);
+  color: #fff;
+  padding: 30px;
+  text-align: center;
+}
+#flipbook .page.page-cover img { width: 70%; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,.4); margin-bottom: 16px; }
+/* page-flip ghi đè thuộc tính style của .page để định vị, nên tô màu qua class thay vì inline style */
+#flipbook .page.page-g0 { background: linear-gradient(160deg,#62C4DA,#3f97ad); }
+#flipbook .page.page-g1 { background: linear-gradient(160deg,#FA855A,#c95a34); }
+#flipbook .page.page-g2 { background: linear-gradient(160deg,#FFDE96,#e0a94f); }
+#flipbook .page.page-g3 { background: linear-gradient(160deg,#C93638,#8f2224); }
+.flip-controls { display: flex; align-items: center; gap: 18px; }
+.flip-controls .page-count { font-size: 13px; color: var(--ink-soft); font-weight: 600; min-width: 70px; text-align: center; }
+.flipbook-hint { font-size: 12.5px; color: var(--ink-soft); text-align: center; max-width: 400px; }
 
 /* ===== Responsive ===== */
 @media (max-width: 900px) {
